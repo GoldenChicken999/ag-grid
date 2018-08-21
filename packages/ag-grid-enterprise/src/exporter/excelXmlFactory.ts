@@ -7,9 +7,7 @@ import {
     ExcelBorder,
     ExcelColumn,
     ExcelRow,
-    ExcelCell,
-    ExcelData,
-    ExcelDataType
+    ExcelCell
 } from 'ag-grid-community';
 
 let LINE_SEPARATOR = '\r\n';

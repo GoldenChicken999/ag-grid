@@ -404,7 +404,5 @@ export class ExcelCreator extends BaseCreator<ExcelCell[][], ExcelGridSerializin
 
             return zipped;
         });
-
     }
-
 }

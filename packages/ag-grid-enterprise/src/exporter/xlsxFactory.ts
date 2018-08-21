@@ -1,5 +1,10 @@
-import {Autowired, Bean, ExcelStyle, ExcelWorksheet, XmlElement, XmlFactory} from 'ag-grid-community';
-import {ExcelXmlFactory} from './excelXmlFactory';
+import {
+    Autowired,
+    Bean,
+    ExcelStyle,
+    ExcelWorksheet,
+    XmlFactory
+} from 'ag-grid-community';
 
 /**
  * See https://www.ecma-international.org/news/TC45_current_work/OpenXML%20White%20Paper.pdf
@@ -8,7 +13,6 @@ import {ExcelXmlFactory} from './excelXmlFactory';
 export class XlsxFactory {
 
     @Autowired('xmlFactory') private xmlFactory: XmlFactory;
-    @Autowired('excelXmlFactory') private excelXmlFactory: ExcelXmlFactory;
 
     public createExcel(styles: ExcelStyle[], worksheets: ExcelWorksheet[]): string {
         return this.worksheet(styles, worksheets);
