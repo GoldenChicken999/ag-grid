@@ -32,6 +32,8 @@ import {
 } from "ag-grid-community";
 
 import {ExcelXmlFactory} from "./excelXmlFactory";
+import {XlsxFactory} from "./xlsxFactory";
+import * as JSZip from 'jszip-sync';
 
 export interface ExcelMixedStyle {
     key: string;
@@ -55,7 +57,7 @@ export class ExcelGridSerializingSession extends BaseGridSerializingSession<Exce
                 processCellCallback: (params: ProcessCellForExportParams) => string,
                 processHeaderCallback: (params: ProcessHeaderForExportParams) => string,
                 sheetName:string,
-                private excelXmlFactory: ExcelXmlFactory,
+                private excelFactory: XlsxFactory | ExcelXmlFactory,
                 baseExcelStyles: ExcelStyle[],
                 private styleLinker: (rowType: RowType, rowIndex: number, colIndex: number, value: string, column: Column, node: RowNode) => string[],
                 suppressTextAsCDATA:boolean) {
@@ -156,7 +158,8 @@ export class ExcelGridSerializingSession extends BaseGridSerializingSession<Exce
                 rows: join(this.customHeader, this.rows, this.customFooter)
             }
         }];
-        return this.excelXmlFactory.createExcelXml(this.excelStyles, data);
+
+        return this.excelFactory.createExcel(this.excelStyles, data);
     }
 
     onNewBodyColumn(rowIndex: number, currentCells: ExcelCell[]): (column: Column, index: number, node?: RowNode) => void {
@@ -268,6 +271,7 @@ export class ExcelGridSerializingSession extends BaseGridSerializingSession<Exce
 export class ExcelCreator extends BaseCreator<ExcelCell[][], ExcelGridSerializingSession, ExcelExportParams> implements IExcelCreator {
 
     @Autowired('excelXmlFactory') private excelXmlFactory: ExcelXmlFactory;
+    @Autowired('xlsxFactory') private xlsxFactory: XlsxFactory;
     @Autowired('columnController') private columnController: ColumnController;
     @Autowired('valueService') private valueService: ValueService;
     @Autowired('gridOptions') private gridOptions: GridOptions;
@@ -276,6 +280,8 @@ export class ExcelCreator extends BaseCreator<ExcelCell[][], ExcelGridSerializin
     @Autowired('downloader') private downloader: Downloader;
     @Autowired('gridSerializer') private gridSerializer: GridSerializer;
     @Autowired('gridOptionsWrapper') gridOptionsWrapper: GridOptionsWrapper;
+
+    private exportMode: string;
 
     @PostConstruct
     public postConstruct(): void {
@@ -287,6 +293,9 @@ export class ExcelCreator extends BaseCreator<ExcelCell[][], ExcelGridSerializin
     }
 
     public exportDataAsExcel(params?: ExcelExportParams): string {
+        if (params.exportMode) {
+            this.setExportMode(params.exportMode);
+        }
         return this.export(params);
     }
 
@@ -295,18 +304,19 @@ export class ExcelCreator extends BaseCreator<ExcelCell[][], ExcelGridSerializin
     }
 
     public getMimeType(): string {
-        return "application/vnd.ms-excel";
+        return this.getExportMode() === 'xml' ? 'application/vnd.ms-excel' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
     }
 
     public getDefaultFileName(): string {
-        return 'export.xls';
+        return `export.${this.getExportMode()}`;
     }
 
     public getDefaultFileExtension(): string {
-        return 'xls';
+        return this.getExportMode();
     }
 
     public createSerializingSession(params?: ExcelExportParams): ExcelGridSerializingSession {
+        const factory = this.getExportMode() === 'xml' ? this.excelXmlFactory : this.xlsxFactory;
         return new ExcelGridSerializingSession(
             this.columnController,
             this.valueService,
@@ -314,7 +324,7 @@ export class ExcelCreator extends BaseCreator<ExcelCell[][], ExcelGridSerializin
             params ? params.processCellCallback : null,
             params ? params.processHeaderCallback : null,
             params && params.sheetName != null && params.sheetName != "" ? params.sheetName : 'ag-grid',
-            this.excelXmlFactory,
+            factory,
             this.gridOptions.excelStyles,
             this.styleLinker.bind(this),
             params && params.suppressTextAsCDATA ? params.suppressTextAsCDATA : false
@@ -355,6 +365,46 @@ export class ExcelCreator extends BaseCreator<ExcelCell[][], ExcelGridSerializin
 
     public isExportSuppressed():boolean {
         return this.gridOptionsWrapper.isSuppressExcelExport();
+    }
+
+    private setExportMode(exportMode: string): void {
+        this.exportMode = exportMode;
+    }
+
+    private getExportMode(): string {
+        return this.exportMode || 'xlsx';
+    }
+
+    protected packageFile(data: string): Blob {
+        if (this.getExportMode() === 'xml') {
+            return super.packageFile(data);
+        }
+
+        const zip: JSZip = new JSZip();
+        const xlsxFactory = this.xlsxFactory;
+
+        return zip.sync(() => {
+            const xl = zip.folder('xl');
+            xl.file('workbook.xml', xlsxFactory.workbook());
+            xl.file('_rels/workbook.xml.rels', xlsxFactory.workbookRels());
+            zip.file('_rels/.rels', xlsxFactory.rels());
+            zip.file('[Content_Types].xml', xlsxFactory.contentTypes());
+
+            xl.file('worksheets/sheet1.xml', data);
+
+            let zipped;
+
+            zip.generateAsync({
+                type: 'blob',
+                mimeType:
+                  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+              }).then(function(content: any) {
+                zipped = content;
+            });
+
+            return zipped;
+        });
+
     }
 
 }

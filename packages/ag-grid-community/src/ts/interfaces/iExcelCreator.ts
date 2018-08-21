@@ -1,4 +1,4 @@
-import {CsvExportParams, ExportParams} from "../exporter/exportParams";
+import {ExportParams} from "../exporter/exportParams";
 
 export interface ExcelWorksheet {
     name: string;
@@ -105,6 +105,7 @@ export interface ExcelInterior {
 export interface ExcelExportParams extends ExportParams<ExcelCell[][]> {
     sheetName?: string;
     suppressTextAsCDATA?:boolean;
+    exportMode: "xlsx" | "xml";
 }
 
 export interface IExcelCreator {

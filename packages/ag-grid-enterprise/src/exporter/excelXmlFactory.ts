@@ -22,7 +22,7 @@ export class ExcelXmlFactory {
 
     @Autowired('xmlFactory') private xmlFactory: XmlFactory;
 
-    public createExcelXml(styles: ExcelStyle[], worksheets: ExcelWorksheet[]) :string {
+    public createExcel(styles: ExcelStyle[], worksheets: ExcelWorksheet[]): string {
         let documentProperties: XmlElement = this.documentProperties();
         let excelWorkbook = this.excelWorkbook();
 

@@ -3,7 +3,7 @@ import {
     GridSerializer, RowAccumulator, BaseGridSerializingSession, RowSpanningAccumulator,
     GridSerializingSession
 } from "./gridSerializer";
-import {Downloader} from "../downloader";
+import {Downloader} from "./downloader";
 import {Column} from "../entities/column";
 import {RowNode} from "../entities/rowNode";
 import {ColumnController} from "../columnController/columnController";
@@ -145,8 +145,9 @@ export abstract class BaseCreator<T, S extends GridSerializingSession<T>, P exte
     public export(userParams?: P): string {
         if (this.isExportSuppressed()) {
             console.warn(`ag-grid: Export canceled. Export is not allowed as per your configuration.`);
-            return "";
+            return '';
         }
+
         let {mergedParams, data} = this.getMergedParamsAndData(userParams);
 
         let fileNamePresent = mergedParams && mergedParams.fileName && mergedParams.fileName.length !== 0;
@@ -156,11 +157,8 @@ export abstract class BaseCreator<T, S extends GridSerializingSession<T>, P exte
             fileName = fileName + "." + this.getDefaultFileExtension();
         }
 
-        this.beans.downloader.download(
-            fileName,
-            data,
-            this.getMimeType()
-        );
+        this.beans.downloader.download(fileName, this.packageFile(data));
+
         return data;
     }
 
@@ -171,6 +169,7 @@ export abstract class BaseCreator<T, S extends GridSerializingSession<T>, P exte
     private getMergedParamsAndData(userParams: P):{mergedParams: P, data: string} {
         let mergedParams = this.mergeDefaultParams(userParams);
         let data = this.beans.gridSerializer.serialize(this.createSerializingSession(mergedParams), mergedParams);
+
         return {mergedParams, data};
     }
 
@@ -181,6 +180,13 @@ export abstract class BaseCreator<T, S extends GridSerializingSession<T>, P exte
         _.assign(params, userParams);
         return params;
     }
+
+    protected packageFile(data: string): Blob {
+        return new Blob(["\ufeff", data], {
+            type: window.navigator.msSaveOrOpenBlob ? this.getMimeType() : 'octet/stream'
+        });
+    }
+
     public abstract createSerializingSession(params?: P): S;
     public abstract getMimeType(): string;
     public abstract getDefaultFileName(): string;

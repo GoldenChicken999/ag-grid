@@ -59,6 +59,7 @@ import {PivotCompFactory} from "./pivotCompFactory";
 import {MenuItemMapper} from "./menu/menuItemMapper";
 import {ExcelCreator} from "./exporter/excelCreator";
 import {ExcelXmlFactory} from "./exporter/excelXmlFactory";
+import {XlsxFactory} from "./exporter/xlsxFactory";
 import {ServerSideRowModel} from "./rowModels/serverSide/serverSideRowModel";
 import {ColumnSelectHeaderComp} from "./sideBar/columns/columnsSelect/columnSelectHeaderComp";
 import {ColumnContainerComp} from "./sideBar/columns/columnsSelect/columnContainerComp";
@@ -69,16 +70,16 @@ import {SideBarSelectComp} from "./sideBar/sideBarSelectComp";
 
 import {StatusPanelService} from "./statusPanel/statusPanelService";
 import {StatusPanelComp} from "./statusPanel/statusPanelComp";
-import {AggregationComponent} from "./statusPanel/aggregationComponent"
+import {AggregationComponent} from "./statusPanel/aggregationComponent";
 import {StatusPanelValueComponent} from "./statusPanel/statusPanelValueComponent";
-import {SelectedRowCountComponent} from "./statusPanel/selectedRowCountComponent"
-import {TotalRowCountComponent} from "./statusPanel/totalRowCountComponent"
-import {FilteredRowCountComponent} from "./statusPanel/filteredRowCountComponent"
-import {TotalAndFilteredRowCountComponent} from "./statusPanel/totalAndFilteredRowCountComponent"
+import {SelectedRowCountComponent} from "./statusPanel/selectedRowCountComponent";
+import {TotalRowCountComponent} from "./statusPanel/totalRowCountComponent";
+import {FilteredRowCountComponent} from "./statusPanel/filteredRowCountComponent";
+import {TotalAndFilteredRowCountComponent} from "./statusPanel/totalAndFilteredRowCountComponent";
 
 let rowModelTypes = {viewport: ViewportRowModel, serverSide: ServerSideRowModel};
 
-Grid.setEnterpriseBeans([EnterpriseMenuFactory, ExcelCreator, ExcelXmlFactory, RowGroupCompFactory, PivotCompFactory,
+Grid.setEnterpriseBeans([EnterpriseMenuFactory, ExcelCreator, ExcelXmlFactory, XlsxFactory, RowGroupCompFactory, PivotCompFactory,
     PivotColumnsPanel, RangeController, ClipboardService, PivotStage, PivotColDefService,
     ContextMenuFactory, GroupStage, AggregationStage, EnterpriseBoot, AggFuncService,
     LicenseManager, MD5, MenuItemMapper, StatusPanelService], rowModelTypes);
