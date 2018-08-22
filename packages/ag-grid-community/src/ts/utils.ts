@@ -160,6 +160,8 @@ export class Utils {
         return value;
     }
 
+    static compose = (...fns: Function[]) => (arg: any) => fns.reduce((composed, f) => f(composed),arg);
+
     static setScrollLeft(element: HTMLElement, value: number, rtl: boolean): void {
         if (rtl) {
             // Chrome and Safari when doing RTL have the END position of the scroll as zero, not the start
