@@ -1,9 +1,9 @@
-import {XmlElement, ExcelWorksheet, Utils} from 'ag-grid-community';
-import {ExcelTemplate} from './iExcelTemplate';
+import {XmlElement, Utils} from 'ag-grid-community';
+import {ExcelXMLTemplate, ExcelWorksheet} from '../../interfaces/iExcel';
 import column from './column';
 import row from './row';
 
-const worksheet: ExcelTemplate = {
+const worksheet: ExcelXMLTemplate = {
     getTemplate(ws: ExcelWorksheet): XmlElement {
         const {table, name} = ws;
         const {columns, rows} = table;

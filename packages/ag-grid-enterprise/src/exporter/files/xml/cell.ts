@@ -1,7 +1,7 @@
-import {ExcelCell, XmlElement} from 'ag-grid-community';
-import {ExcelTemplate} from './iExcelTemplate';
+import {XmlElement} from 'ag-grid-community';
+import {ExcelCell, ExcelXMLTemplate} from '../../interfaces/iExcel';
 
-const cell: ExcelTemplate = {
+const cell: ExcelXMLTemplate = {
     getTemplate(c: ExcelCell): XmlElement {
         const {mergeAcross, styleId, data} = c;
         const properties : {[id:string]:string|number}= {};

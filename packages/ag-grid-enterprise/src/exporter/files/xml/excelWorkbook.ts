@@ -1,7 +1,7 @@
 import {XmlElement} from 'ag-grid-community';
-import {ExcelTemplate} from './iExcelTemplate';
+import {ExcelXMLTemplate} from '../../interfaces/iExcel';
 
-const excelWorkbook: ExcelTemplate = {
+const excelWorkbook: ExcelXMLTemplate = {
     getTemplate(): XmlElement {
         return {
             name: "ExcelWorkbook",

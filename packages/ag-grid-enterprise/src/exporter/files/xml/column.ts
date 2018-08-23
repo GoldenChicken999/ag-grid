@@ -1,7 +1,7 @@
-import {XmlElement, ExcelColumn} from 'ag-grid-community';
-import {ExcelTemplate} from './iExcelTemplate';
+import {XmlElement} from 'ag-grid-community';
+import {ExcelColumn, ExcelXMLTemplate} from '../../interfaces/iExcel';
 
-const column: ExcelTemplate = {
+const column: ExcelXMLTemplate = {
     getTemplate(c: ExcelColumn): XmlElement {
         const {width} = c;
         return {

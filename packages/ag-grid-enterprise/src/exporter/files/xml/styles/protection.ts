@@ -1,11 +1,7 @@
-import {
-    ExcelStyle,
-    XmlElement
-} from 'ag-grid-community';
+import {XmlElement} from 'ag-grid-community';
+import {ExcelStyle, ExcelXMLTemplate} from '../../../interfaces/iExcel';
 
-import {ExcelTemplate} from '../iExcelTemplate';
-
-const protection: ExcelTemplate = {
+const protection: ExcelXMLTemplate = {
     getTemplate(styleProperties: ExcelStyle): XmlElement {
         return {
             name: "Protection",

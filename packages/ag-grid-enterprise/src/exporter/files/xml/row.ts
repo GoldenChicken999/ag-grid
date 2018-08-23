@@ -1,8 +1,8 @@
-import {ExcelCell, ExcelRow, XmlElement, Utils} from 'ag-grid-community';
-import {ExcelTemplate} from './iExcelTemplate';
+import {XmlElement, Utils} from 'ag-grid-community';
+import {ExcelCell, ExcelRow, ExcelXMLTemplate} from '../../interfaces/iExcel';
 import cell from './cell';
 
-const row: ExcelTemplate = {
+const row: ExcelXMLTemplate = {
     getTemplate(r: ExcelRow): XmlElement {
         const {cells} = r;
 

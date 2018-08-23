@@ -1,4 +1,4 @@
-import {XmlElement, XmlFactory} from 'ag-grid-community';
+import {XmlElement, XmlFactory, Utils} from 'ag-grid-community';
 import {Bean, Autowired} from 'ag-grid-community';
 
 import workbook from './files/xml/workbook';
@@ -14,13 +14,7 @@ import protection from './files/xml/styles/protection';
 import numberFormat from './files/xml/styles/numberFormat';
 import style from './files/xml/styles/style';
 
-import {
-    Utils,
-    ExcelStyle,
-    ExcelWorksheet
-} from 'ag-grid-community';
-
-import {ExcelTemplate} from './files/xml/iExcelTemplate';
+import {ExcelStyle, ExcelWorksheet, ExcelXMLTemplate} from './interfaces/iExcel';
 /**
  * See https://msdn.microsoft.com/en-us/library/aa140066(v=office.10).aspx
  */
@@ -80,7 +74,7 @@ export class ExcelXmlFactory {
         return (children: XmlElement[]) => {
             if (!styleProperties[property]) return children;
 
-            const options: { [s: string]: ExcelTemplate } = {
+            const options: { [s: string]: ExcelXMLTemplate } = {
                 alignment,
                 borders,
                 font,

@@ -1,11 +1,7 @@
-import {
-    ExcelStyle,
-    XmlElement
-} from 'ag-grid-community';
+import {XmlElement} from 'ag-grid-community';
+import {ExcelStyle, ExcelXMLTemplate} from '../../../interfaces/iExcel';
 
-import {ExcelTemplate} from '../iExcelTemplate';
-
-const font: ExcelTemplate = {
+const font: ExcelXMLTemplate = {
     getTemplate(styleProperties: ExcelStyle): XmlElement {
         const {
             bold,

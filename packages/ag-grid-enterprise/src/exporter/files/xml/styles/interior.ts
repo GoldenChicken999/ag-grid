@@ -1,11 +1,7 @@
-import {
-    ExcelStyle,
-    XmlElement
-} from 'ag-grid-community';
+import {XmlElement} from 'ag-grid-community';
+import {ExcelStyle, ExcelXMLTemplate} from '../../../interfaces/iExcel';
 
-import {ExcelTemplate} from '../iExcelTemplate';
-
-const interior: ExcelTemplate = {
+const interior: ExcelXMLTemplate = {
     getTemplate(styleProperties: ExcelStyle): XmlElement {
         const {color, pattern, patternColor} = styleProperties.interior;
         return {

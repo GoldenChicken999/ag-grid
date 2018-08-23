@@ -1,12 +1,7 @@
-import {
-    ExcelStyle,
-    ExcelBorder,
-    XmlElement
-} from 'ag-grid-community';
+import {XmlElement} from 'ag-grid-community';
+import {ExcelBorder, ExcelStyle, ExcelXMLTemplate} from '../../../interfaces/iExcel';
 
-import {ExcelTemplate} from '../iExcelTemplate';
-
-const borders: ExcelTemplate = {
+const borders: ExcelXMLTemplate = {
     getTemplate(styleProperties: ExcelStyle): XmlElement {
         const {
             borderBottom,
