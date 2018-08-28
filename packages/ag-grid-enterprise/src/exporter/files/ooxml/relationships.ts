@@ -1,5 +1,5 @@
 import {Utils} from 'ag-grid-community';
-import {ExcelOOXMLTemplate, ExcelRelationship} from '../../interfaces/iExcel';
+import {ExcelOOXMLTemplate, ExcelRelationship} from 'ag-grid-community';
 import relationship from './relationship';
 
 const relationships: ExcelOOXMLTemplate = {

@@ -1,5 +1,5 @@
 import {Utils} from 'ag-grid-community';
-import {ExcelOOXMLTemplate} from '../../interfaces/iExcel';
+import {ExcelOOXMLTemplate} from 'ag-grid-community';
 import contentType from './contentType';
 
 const contentTypes: ExcelOOXMLTemplate = {

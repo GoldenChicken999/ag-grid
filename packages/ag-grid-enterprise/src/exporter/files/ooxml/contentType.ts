@@ -1,4 +1,4 @@
-import {ExcelContentType, ExcelOOXMLTemplate} from '../../interfaces/iExcel';
+import {ExcelContentType, ExcelOOXMLTemplate} from 'ag-grid-community';
 
 const contentType: ExcelOOXMLTemplate = {
     getTemplate(config: ExcelContentType) {

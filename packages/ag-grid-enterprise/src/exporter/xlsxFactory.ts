@@ -5,7 +5,7 @@ import workbook from './files/ooxml/workbook';
 import worksheet from './files/ooxml/worksheet';
 import relationships from './files/ooxml/relationships';
 
-import {ExcelStyle, ExcelWorksheet} from './interfaces/iExcel';
+import {ExcelStyle, ExcelWorksheet} from 'ag-grid-community';
 
 /**
  * See https://www.ecma-international.org/news/TC45_current_work/OpenXML%20White%20Paper.pdf

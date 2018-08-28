@@ -22,7 +22,7 @@ import {
     ExcelRow,
     ExcelStyle,
     ExcelWorksheet,
-} from './interfaces/iExcel';
+} from 'ag-grid-community';
 
 import {ExcelMixedStyle} from './excelCreator';
 import {ExcelXmlFactory} from './excelXmlFactory';

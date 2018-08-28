@@ -18,7 +18,7 @@ import {
     _
 } from "ag-grid-community";
 
-import {ExcelCell, ExcelStyle} from './interfaces/iExcel';
+import {ExcelCell, ExcelStyle} from 'ag-grid-community';
 import {ExcelGridSerializingSession} from './excelGridSerializingSession';
 import {ExcelXmlFactory} from "./excelXmlFactory";
 import {XlsxFactory} from "./xlsxFactory";

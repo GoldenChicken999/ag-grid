@@ -41,7 +41,27 @@ export {QuerySelector, Listener, RefSelector} from "./widgets/componentAnnotatio
 
 // excel
 export {
-    ExcelExportParams
+    ExcelAlignment,
+    ExcelBorder,
+    ExcelBorders,
+    ExcelCell,
+    ExcelColumn,
+    ExcelContentType,
+    ExcelData,
+    ExcelDataType,
+    ExcelExportParams,
+    ExcelFont,
+    ExcelInterior,
+    ExcelNumberFormat,
+    ExcelOOXMLDataType,
+    ExcelOOXMLTemplate,
+    ExcelProtection,
+    ExcelRelationship,
+    ExcelRow,
+    ExcelStyle,
+    ExcelTable,
+    ExcelXMLTemplate,
+    ExcelWorksheet
 } from "./interfaces/iExcelCreator";
 
 // dragAndDrop

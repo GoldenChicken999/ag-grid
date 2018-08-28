@@ -1,5 +1,5 @@
 import {Utils} from 'ag-grid-community';
-import {ExcelOOXMLTemplate, ExcelWorksheet} from '../../interfaces/iExcel';
+import {ExcelOOXMLTemplate, ExcelWorksheet} from 'ag-grid-community';
 import column from './column';
 import row from './row';
 

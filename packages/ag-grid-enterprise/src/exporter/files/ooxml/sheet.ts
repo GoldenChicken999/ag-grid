@@ -1,4 +1,4 @@
-import {ExcelOOXMLTemplate} from '../../interfaces/iExcel';
+import {ExcelOOXMLTemplate} from 'ag-grid-community';
 
 const sheet: ExcelOOXMLTemplate = {
     getTemplate() {
