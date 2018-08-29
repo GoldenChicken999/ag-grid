@@ -150,6 +150,7 @@ export type ExcelOOXMLDataType = 'str' | 's' | 'inlineStr' | 'n' | 'b' | 'd' | '
 
 export interface ExcelOOXMLTemplate {
     getTemplate(config?: Object): XmlElement;
+    convertType?(type: string): string;
 }
 
 export interface ExcelRelationship {

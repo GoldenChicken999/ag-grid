@@ -5,13 +5,14 @@ let LINE_SEPARATOR = '\r\n';
 export class XmlFactory {
     createHeader(headerElement: HeaderElement = {}): string {
         const headerStart = '<?';
-        const headerEnd = ' ?>';
+        const headerEnd = '?>';
+        const keys = ['version'];
 
-        if (!headerElement.version) {
-            headerElement.version = '1.0';
-        }
+        if (!headerElement.version) headerElement.version = "1.0";
+        if (headerElement.encoding) keys.push('encoding');
+        if (headerElement.standalone) keys.push('standalone');
 
-        const att = Object.keys(headerElement).map((key: string): string => `${key}=${headerElement[key]}`).join(' ');
+        const att = keys.map((key: string): string => `${key}="${headerElement[key]}"`).join(' ');
         return `${headerStart}xml ${att} ${headerEnd}`;
     }
 

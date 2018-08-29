@@ -53,11 +53,11 @@ export class ExcelXlsxFactory {
 
     public workbookRels(): string {
         const header = this.xmlFactory.createHeader();
-        const rs = relationships.getTemplate({
+        const rs = relationships.getTemplate([{
             Id: 'rId3',
             Target: 'worksheets/sheet1.xml',
             Type: 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet'
-        });
+        }]);
         const body = this.xmlFactory.createXml(rs);
 
         return `${header}${body}`;
@@ -68,7 +68,8 @@ export class ExcelXlsxFactory {
             encoding: 'UTF-8',
             standalone: 'yes'
         });
-        const template = this.xmlFactory.createXml(worksheet.getTemplate());
+        const template = this.xmlFactory.createXml(worksheet.getTemplate(worksheets[0]));
+
         return `${header}${template}`;
     }
 }
