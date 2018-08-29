@@ -16,12 +16,12 @@ import {
     StylingService,
     ValueService,
     _
-} from "ag-grid-community";
+} from 'ag-grid-community';
 
 import {ExcelCell, ExcelStyle} from 'ag-grid-community';
 import {ExcelGridSerializingSession} from './excelGridSerializingSession';
-import {ExcelXmlFactory} from "./excelXmlFactory";
-import {XlsxFactory} from "./xlsxFactory";
+import {ExcelXmlFactory} from './excelXmlFactory';
+import {ExcelXlsxFactory} from './excelXlsxFactory';
 import * as JSZip from 'jszip-sync';
 
 export interface ExcelMixedStyle {
@@ -34,7 +34,7 @@ export interface ExcelMixedStyle {
 export class ExcelCreator extends BaseCreator<ExcelCell[][], ExcelGridSerializingSession, ExcelExportParams> implements IExcelCreator {
 
     @Autowired('excelXmlFactory') private excelXmlFactory: ExcelXmlFactory;
-    @Autowired('xlsxFactory') private xlsxFactory: XlsxFactory;
+    @Autowired('excelXlsxFactory') private xlsxFactory: ExcelXlsxFactory;
     @Autowired('columnController') private columnController: ColumnController;
     @Autowired('valueService') private valueService: ValueService;
     @Autowired('gridOptions') private gridOptions: GridOptions;

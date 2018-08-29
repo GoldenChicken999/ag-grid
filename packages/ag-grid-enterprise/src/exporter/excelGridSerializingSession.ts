@@ -26,7 +26,7 @@ import {
 
 import {ExcelMixedStyle} from './excelCreator';
 import {ExcelXmlFactory} from './excelXmlFactory';
-import {XlsxFactory} from './xlsxFactory';
+import {ExcelXlsxFactory} from './excelXlsxFactory';
 
 export class ExcelGridSerializingSession extends BaseGridSerializingSession<ExcelCell[][]> {
     private stylesByIds: any;
@@ -47,7 +47,7 @@ export class ExcelGridSerializingSession extends BaseGridSerializingSession<Exce
                 processCellCallback: (params: ProcessCellForExportParams) => string,
                 processHeaderCallback: (params: ProcessHeaderForExportParams) => string,
                 sheetName:string,
-                private excelFactory: ExcelXmlFactory | XlsxFactory,
+                private excelFactory: ExcelXmlFactory | ExcelXlsxFactory,
                 baseExcelStyles: ExcelStyle[],
                 private styleLinker: (rowType: RowType, rowIndex: number, colIndex: number, value: string, column: Column, node: RowNode) => string[],
                 suppressTextAsCDATA:boolean) {

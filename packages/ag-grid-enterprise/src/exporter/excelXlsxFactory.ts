@@ -10,8 +10,8 @@ import {ExcelStyle, ExcelWorksheet} from 'ag-grid-community';
 /**
  * See https://www.ecma-international.org/news/TC45_current_work/OpenXML%20White%20Paper.pdf
  */
-@Bean('xlsxFactory')
-export class XlsxFactory {
+@Bean('excelXlsxFactory')
+export class ExcelXlsxFactory {
 
     @Autowired('xmlFactory') private xmlFactory: XmlFactory;
 
@@ -20,14 +20,17 @@ export class XlsxFactory {
     }
 
     public contentTypes(): string {
-        const header = '<?xml version="1.0" ?>';
+        const header = this.xmlFactory.createHeader();
         const body = this.xmlFactory.createXml(contentTypes.getTemplate());
 
         return `${header}${body}`;
     }
 
     public rels(): string {
-        const header = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+        const header = this.xmlFactory.createHeader({
+            encoding: 'UTF-8',
+            standalone: 'yes'
+        });
         const rs = relationships.getTemplate([{
             Id: 'rId1',
             Type: 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument',
@@ -39,14 +42,17 @@ export class XlsxFactory {
     }
 
     public workbook(): string {
-        const header = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+        const header = this.xmlFactory.createHeader({
+            encoding: 'UTF-8',
+            standalone: 'yes'
+        });
         const body = this.xmlFactory.createXml(workbook.getTemplate());
 
         return `${header}${body}`;
     }
 
     public workbookRels(): string {
-        const header = '<?xml version="1.0" ?>';
+        const header = this.xmlFactory.createHeader();
         const rs = relationships.getTemplate({
             Id: 'rId3',
             Target: 'worksheets/sheet1.xml',
@@ -58,7 +64,10 @@ export class XlsxFactory {
     }
 
     public worksheet(worksheets: ExcelWorksheet[]): string {
-        const header = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+        const header = this.xmlFactory.createHeader({
+            encoding: 'UTF-8',
+            standalone: 'yes'
+        });
         const template = this.xmlFactory.createXml(worksheet.getTemplate());
         return `${header}${template}`;
     }

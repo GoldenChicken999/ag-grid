@@ -59,7 +59,7 @@ import {PivotCompFactory} from "./pivotCompFactory";
 import {MenuItemMapper} from "./menu/menuItemMapper";
 import {ExcelCreator} from "./exporter/excelCreator";
 import {ExcelXmlFactory} from "./exporter/excelXmlFactory";
-import {XlsxFactory} from "./exporter/xlsxFactory";
+import {ExcelXlsxFactory} from "./exporter/excelXlsxFactory";
 import {ServerSideRowModel} from "./rowModels/serverSide/serverSideRowModel";
 import {ColumnSelectHeaderComp} from "./sideBar/columns/columnsSelect/columnSelectHeaderComp";
 import {ColumnContainerComp} from "./sideBar/columns/columnsSelect/columnContainerComp";
@@ -79,7 +79,7 @@ import {TotalAndFilteredRowCountComponent} from "./statusPanel/totalAndFilteredR
 
 let rowModelTypes = {viewport: ViewportRowModel, serverSide: ServerSideRowModel};
 
-Grid.setEnterpriseBeans([EnterpriseMenuFactory, ExcelCreator, ExcelXmlFactory, XlsxFactory, RowGroupCompFactory, PivotCompFactory,
+Grid.setEnterpriseBeans([EnterpriseMenuFactory, ExcelCreator, ExcelXmlFactory, ExcelXlsxFactory, RowGroupCompFactory, PivotCompFactory,
     PivotColumnsPanel, RangeController, ClipboardService, PivotStage, PivotColDefService,
     ContextMenuFactory, GroupStage, AggregationStage, EnterpriseBoot, AggFuncService,
     LicenseManager, MD5, MenuItemMapper, StatusPanelService], rowModelTypes);

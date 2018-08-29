@@ -3,6 +3,18 @@ let LINE_SEPARATOR = '\r\n';
 
 @Bean('xmlFactory')
 export class XmlFactory {
+    createHeader(headerElement: HeaderElement = {}): string {
+        const headerStart = '<?';
+        const headerEnd = ' ?>';
+
+        if (!headerElement.version) {
+            headerElement.version = '1.0';
+        }
+
+        const att = Object.keys(headerElement).map((key: string): string => `${key}=${headerElement[key]}`).join(' ');
+        return `${headerStart}xml ${att} ${headerEnd}`;
+    }
+
     createXml(xmlElement: XmlElement, booleanTransformer?:(currentValue:boolean)=>string) :string {
         let props: string = '';
         if (xmlElement.properties) {
@@ -59,6 +71,13 @@ export interface XmlElement {
     properties?: XmlAttributes;
     children?: XmlElement[];
     textNode?: string;
+}
+
+export interface HeaderElement {
+    [key: string]: string;
+    version?: string;
+    standalone?: string;
+    encoding?: string;
 }
 
 export interface XmlAttributes {
