@@ -196,13 +196,20 @@ export {TouchListener, TapEvent, LongTapEvent} from "./widgets/touchListener";
 export {RangeSelection, AddRangeSelectionParams} from "./interfaces/iRangeController";
 export {IRangeController} from "./interfaces/iRangeController";
 
+// exporter
+export {CsvCreator, BaseCreator} from "./exporter/csvCreator";
+export {Downloader} from "./exporter/downloader";
+export {XmlFactory} from "./exporter/xmlFactory";
+export {BaseGridSerializingSession, GridSerializer, GridSerializingSession, GridSerializingParams} from "./exporter/gridSerializer";
+export {RowType, RowAccumulator, RowSpanningAccumulator} from "./exporter/gridSerializer";
+export {CsvExportParams, ExportParams, ProcessCellForExportParams, ProcessHeaderForExportParams} from "./exporter/exportParams";
+export {XmlElement} from "./exporter/xmlFactory";
+
 // root
 export {BaseFrameworkFactory} from "./baseFrameworkFactory";
 export {CellNavigationService} from "./cellNavigationService";
 export {AlignedGridsService} from "./alignedGridsService";
 export {Constants} from "./constants";
-export {CsvCreator, BaseCreator} from "./exporter/csvCreator";
-export {Downloader} from "./exporter/downloader";
 export {Grid, GridParams} from "./grid";
 export {GridApi, RedrawRowsParams, RefreshCellsParams, StartEditingCellParams, DetailGridInfo} from "./gridApi";
 export {Events} from "./eventKeys";
@@ -219,10 +226,6 @@ export {TemplateService} from "./templateService";
 export {Utils, NumberSequence, _, Promise, ExternalPromise} from "./utils";
 export {ValueService} from "./valueService/valueService";
 export {ExpressionService} from "./valueService/expressionService";
-export {XmlFactory} from "./exporter/xmlFactory";
-export {GridSerializer, BaseGridSerializingSession, RowType, RowAccumulator, RowSpanningAccumulator} from "./exporter/gridSerializer";
-export {CsvExportParams, ExportParams, ProcessCellForExportParams, ProcessHeaderForExportParams} from "./exporter/exportParams";
-export {XmlElement} from "./exporter/xmlFactory";
 export {LoggerFactory} from "./logger";
 
 // uncatalogued

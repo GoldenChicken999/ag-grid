@@ -19,7 +19,8 @@ import {
 } from 'ag-grid-community';
 
 import {ExcelCell, ExcelStyle} from 'ag-grid-community';
-import {ExcelGridSerializingSession} from './excelGridSerializingSession';
+import {ExcelXmlSerializingSession} from './excelXmlSerializingSession';
+import {ExcelXlsxSerializingSession} from './excelXlsxSerializingSession';
 import {ExcelXmlFactory} from './excelXmlFactory';
 import {ExcelXlsxFactory} from './excelXlsxFactory';
 import * as JSZip from 'jszip-sync';
@@ -30,8 +31,10 @@ export interface ExcelMixedStyle {
     result: ExcelStyle;
 }
 
+type SerializingSession = ExcelXmlSerializingSession | ExcelXlsxSerializingSession;
+
 @Bean('excelCreator')
-export class ExcelCreator extends BaseCreator<ExcelCell[][], ExcelGridSerializingSession, ExcelExportParams> implements IExcelCreator {
+export class ExcelCreator extends BaseCreator<ExcelCell[][], SerializingSession, ExcelExportParams> implements IExcelCreator {
 
     @Autowired('excelXmlFactory') private excelXmlFactory: ExcelXmlFactory;
     @Autowired('excelXlsxFactory') private xlsxFactory: ExcelXlsxFactory;
@@ -78,20 +81,26 @@ export class ExcelCreator extends BaseCreator<ExcelCell[][], ExcelGridSerializin
         return this.getExportMode();
     }
 
-    public createSerializingSession(params?: ExcelExportParams): ExcelGridSerializingSession {
-        const factory = this.getExportMode() === 'xml' ? this.excelXmlFactory : this.xlsxFactory;
-        return new ExcelGridSerializingSession(
-            this.columnController,
-            this.valueService,
-            this.gridOptionsWrapper,
-            params ? params.processCellCallback : null,
-            params ? params.processHeaderCallback : null,
-            params && params.sheetName != null && params.sheetName != "" ? params.sheetName : 'ag-grid',
-            factory,
-            this.gridOptions.excelStyles,
-            this.styleLinker.bind(this),
-            params && params.suppressTextAsCDATA ? params.suppressTextAsCDATA : false
-        );
+    public createSerializingSession(params?: ExcelExportParams): SerializingSession {
+        const {columnController, valueService, gridOptionsWrapper} = this;
+        const {processCellCallback, processHeaderCallback, sheetName, suppressTextAsCDATA} = params;
+        const isXlsx = this.getExportMode() === 'xlsx';
+        const excelFactory = isXlsx ? this.xlsxFactory : this.excelXmlFactory;
+
+        const config = {
+            columnController,
+            valueService,
+            gridOptionsWrapper,
+            processCellCallback: processCellCallback || null,
+            processHeaderCallback: processHeaderCallback || null,
+            sheetName: sheetName != null && sheetName !== '' ? sheetName : 'ag-grid',
+            excelFactory,
+            baseExcelStyles: this.gridOptions.excelStyles,
+            styleLinker: this.styleLinker.bind(this),
+            suppressTextAsCDATA: suppressTextAsCDATA || false
+        };
+
+        return new (isXlsx ? ExcelXlsxSerializingSession : ExcelXmlSerializingSession)(config);
     }
 
     private styleLinker(rowType: RowType, rowIndex: number, colIndex: number, value: string, column: Column, node: RowNode): string[] {

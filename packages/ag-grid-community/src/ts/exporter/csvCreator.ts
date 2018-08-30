@@ -1,7 +1,7 @@
 import {Bean, Autowired, PostConstruct} from "../context/context";
 import {
     GridSerializer, RowAccumulator, BaseGridSerializingSession, RowSpanningAccumulator,
-    GridSerializingSession
+    GridSerializingSession, GridSerializingParams
 } from "./gridSerializer";
 import {Downloader} from "./downloader";
 import {Column} from "../entities/column";
@@ -18,20 +18,30 @@ import {_} from "../utils";
 
 let LINE_SEPARATOR = '\r\n';
 
+export interface CsvSerializingParams extends GridSerializingParams {
+    suppressQuotes: boolean;
+    columnSeparator: string;
+}
+
 export class CsvSerializingSession extends BaseGridSerializingSession<string> {
     private result:string = '';
     private lineOpened:boolean = false;
+    private suppressQuotes: boolean;
+    private columnSeparator: string;
 
-    constructor(
-        columnController: ColumnController,
-        valueService: ValueService,
-        gridOptionsWrapper: GridOptionsWrapper,
-        processCellCallback:(params: ProcessCellForExportParams)=>string,
-        processHeaderCallback:(params: ProcessHeaderForExportParams)=>string,
-        private suppressQuotes: boolean,
-        private columnSeparator: string
-    ) {
-        super(columnController, valueService, gridOptionsWrapper, processCellCallback, processHeaderCallback);
+    constructor(config: CsvSerializingParams) {
+        super({
+            columnController: config.columnController,
+            valueService: config.valueService,
+            gridOptionsWrapper: config.gridOptionsWrapper,
+            processCellCallback: config.processCellCallback,
+            processHeaderCallback: config.processHeaderCallback
+        });
+
+        const {suppressQuotes, columnSeparator} = config;
+
+        this.suppressQuotes = suppressQuotes;
+        this.columnSeparator = columnSeparator;
     }
 
     public prepare(columnsToExport: Column[]): void {
@@ -234,15 +244,18 @@ export class CsvCreator extends BaseCreator<string, CsvSerializingSession, CsvEx
     }
 
     public createSerializingSession(params?: CsvExportParams): CsvSerializingSession {
-        return new CsvSerializingSession(
-                this.columnController,
-                this.valueService,
-                this.gridOptionsWrapper,
-                params ? params.processCellCallback : null,
-                params ? params.processHeaderCallback : null,
-                params && params.suppressQuotes,
-                (params && params.columnSeparator) || ','
-            );
+        const {columnController, valueService, gridOptionsWrapper} = this;
+        const {processCellCallback, processHeaderCallback, suppressQuotes, columnSeparator} = params;
+
+        return new CsvSerializingSession({
+                columnController,
+                valueService,
+                gridOptionsWrapper,
+                processCellCallback: processCellCallback || null,
+                processHeaderCallback: processHeaderCallback || null,
+                suppressQuotes: suppressQuotes,
+                columnSeparator: columnSeparator|| ','
+        });
     }
 
     public isExportSuppressed(): boolean {

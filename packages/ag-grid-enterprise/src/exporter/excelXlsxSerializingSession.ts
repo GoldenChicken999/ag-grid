@@ -3,6 +3,12 @@ import {
     Column,
     ColumnController,
     Constants,
+    ExcelCell,
+    ExcelColumn,
+    ExcelDataType,
+    ExcelRow,
+    ExcelStyle,
+    ExcelWorksheet,
     GridOptionsWrapper,
     ProcessCellForExportParams,
     ProcessHeaderForExportParams,
@@ -15,20 +21,11 @@ import {
     _
 } from 'ag-grid-community';
 
-import {
-    ExcelCell,
-    ExcelColumn,
-    ExcelDataType,
-    ExcelRow,
-    ExcelStyle,
-    ExcelWorksheet,
-} from 'ag-grid-community';
-
 import {ExcelMixedStyle} from './excelCreator';
-import {ExcelXmlFactory} from './excelXmlFactory';
+import {ExcelGridSerializingParams} from './excelXmlSerializingSession';
 import {ExcelXlsxFactory} from './excelXlsxFactory';
 
-export class ExcelGridSerializingSession extends BaseGridSerializingSession<ExcelCell[][]> {
+export class ExcelXlsxSerializingSession extends BaseGridSerializingSession<ExcelCell[][]> {
     private stylesByIds: any;
     private mixedStyles: { [key: string]: ExcelMixedStyle } = {};
     private mixedStyleCounter: number = 0;
@@ -41,17 +38,27 @@ export class ExcelGridSerializingSession extends BaseGridSerializingSession<Exce
     private rows: ExcelRow[] = [];
     private cols: ExcelColumn[];
 
-    constructor(columnController: ColumnController,
-                valueService: ValueService,
-                gridOptionsWrapper: GridOptionsWrapper,
-                processCellCallback: (params: ProcessCellForExportParams) => string,
-                processHeaderCallback: (params: ProcessHeaderForExportParams) => string,
-                sheetName:string,
-                private excelFactory: ExcelXmlFactory | ExcelXlsxFactory,
-                baseExcelStyles: ExcelStyle[],
-                private styleLinker: (rowType: RowType, rowIndex: number, colIndex: number, value: string, column: Column, node: RowNode) => string[],
-                suppressTextAsCDATA:boolean) {
-        super(columnController, valueService, gridOptionsWrapper, processCellCallback, processHeaderCallback, (raw: string) => raw);
+    private excelFactory: ExcelXlsxFactory;
+    baseExcelStyles: ExcelStyle[];
+    private styleLinker: (rowType: RowType, rowIndex: number, colIndex: number, value: string, column: Column, node: RowNode) => string[];
+
+    constructor(config: ExcelGridSerializingParams) {
+        super({
+            columnController: config.columnController,
+            valueService: config.valueService,
+            gridOptionsWrapper: config.gridOptionsWrapper,
+            processCellCallback: config.processCellCallback,
+            processHeaderCallback: config.processHeaderCallback,
+            cellAndHeaderEscaper: (raw: string) => raw
+        });
+
+        const {sheetName, excelFactory, baseExcelStyles, styleLinker, suppressTextAsCDATA} = config;
+
+        this.sheetName = sheetName;
+        this.excelFactory = <ExcelXlsxFactory>excelFactory;
+        this.baseExcelStyles = baseExcelStyles;
+        this.styleLinker = styleLinker;
+        this.suppressTextAsCDATA = suppressTextAsCDATA;
         this.stylesByIds = {};
 
         if (!baseExcelStyles) {
